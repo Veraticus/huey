@@ -18,7 +18,7 @@ module Huey
     end
 
     def initialize(id, hash)
-      @id = id
+      @id = id.to_i
 
       Bulb::Attributes.each do |name|
         instance_variable_set("@#{name}".to_sym, hash[name.to_s])
