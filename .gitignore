@@ -1,0 +1,17 @@
+*.gem
+.bundle
+
+.autotest
+.DS_Store
+.loadpath
+.project
+.yardoc/
+.bundle/
+.idea/
+
+coverage/
+doc/
+pkg/
+tmp/
+
+*/.DS_Store
