@@ -18,7 +18,6 @@ module Huey
       responses = []
 
       EM.run do
-        puts "Running event reactor!"
         ms = multicast_searcher.call
 
         ms.discovery_responses.subscribe do |notification|

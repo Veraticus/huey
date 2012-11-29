@@ -19,24 +19,33 @@ module Huey
 
     def initialize(id, hash)
       @id = id.to_i
+      @changes = {}
+      @name = hash['name']
 
-      Bulb::Attributes.each do |name|
-        instance_variable_set("@#{name}".to_sym, hash[name.to_s])
+      (Huey::Bulb::Attributes - [:name]).each do |attribute|
+        instance_variable_set("@#{attribute}".to_sym, hash['state'][attribute.to_s])
       end
     end
 
-    Attributes.each do |name|
-      define_method(name) do
-        instance_variable_get("@#{name}".to_sym)
+    Huey::Bulb::Attributes.each do |attribute|
+      define_method(attribute) do
+        instance_variable_get("@#{attribute}".to_sym)
       end
 
-      define_method("#{name}=".to_sym) do |new_value|
-        return true if self.send(name) == new_value
+      define_method("#{attribute}=".to_sym) do |new_value|
+        return true if self.send(attribute) == new_value
 
-        instance_variable_set("@#{name}".to_sym, new_value)
-        Huey::Request.put("lights/#{self.id}/state", body: MultiJson.dump({name => new_value}))
+        @changes[attribute] = new_value
+        instance_variable_set("@#{attribute}".to_sym, new_value)
       end
     end
+
+    def save
+      Huey::Request.put("lights/#{self.id}/state", body: MultiJson.dump(@changes))
+      @changes = {}
+      true
+    end
+    alias :commit :save
 
     def alert!
       Huey::Request.put("lights/#{self.id}/state", body: MultiJson.dump({alert: 'select'}))

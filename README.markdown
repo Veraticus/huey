@@ -7,7 +7,7 @@ Easy control of your Phillips Hue lights, in an attractive Gem format!
 Installing Huey is pretty simple. First include the Gem in your Gemfile:
 
 ```ruby
-gem 'huey', git: 'git://github.com/Veraticus/Huey.git'
+gem 'huey', git: 'git://github.com/Veraticus/huey.git'
 ```
 
 (It's not in RubyGems yet because I'm not totally sure it's actually stable enough for release.)
@@ -35,7 +35,7 @@ end
 The first time you issue any Huey command, you're likely to see something like this:
 
 ```ruby
-Huey::Errors::PressLinkButton: Press the link button and try your request again
+Huey::Errors::PressLinkButton: 'Press the link button and try your request again'
 ```
 
 Just like the message says, go press the link button on your Hue hub, and then reissue the request. It should work the second time. Then you can get to the exciting stuff:
@@ -46,13 +46,15 @@ Huey::Bulb.all # Returns an array of your bulbs
 bulb = Huey::Bulb.find(1) # Finds the bulb with the ID of 1
 bulb = Huey::Bulb.find('Living Room') # Finds the bulb with the name 'Living Room'
 
-bulb.alert! # Flashes the bulb in question once, useful for checking connectivity
-bulb.on = false # Turn the bulb off
-bulb.bri = 100 # Dim the bulb a little bit
-bulb.ct = 500 # Change the bulb's color
+bulb.alert! # Flashes the bulb in question once and immediately, useful for checking connectivity
+
+bulb.bri = 100 # Let's dim the bulb a little bit
+bulb.ct = 500 # And make it a little more orange
+
+bulb.save # Apply all the changes you've made
 ```
 
-Changes to the bulb take effect immediately. I think I'll be changing this soon so that they'll only take effect when saved.
+Changes to the bulb only take effect when you call `save` on it. If you prefer, `save` is aliased as `commit`.
 
 ## Quasi-Legal Mumbo-Jumbo
 
