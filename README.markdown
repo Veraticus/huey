@@ -64,7 +64,7 @@ For your reference, the attributes on bulb you can change are:
 - **sat**: For hue/saturation mode. Between `0` and `254`.
 - **xy**: For CIE 1931 mode. An array of two floats, like: [0.44, 0.4051]
 - **ct**: For color temperature mode. Expressed in [mireds](http://en.wikipedia.org/wiki/Mired), an integer between `154` and `500`.
-- **transitiontime**: An integer n tenths of a second, so `10` is 1 second, and `100` is 10 seconds. Use `0` for instantaneous transitions. 
+- **transitiontime**: An integer. Tenths of a second, so `10` is 1 second, and `100` is 10 seconds. Use `0` for instantaneous transitions. 
 
 I used [http://rsmck.co.uk/hue](http://rsmck.co.uk/hue) as the source for all this stuff.
 
