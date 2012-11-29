@@ -47,6 +47,12 @@ module Huey
     end
     alias :commit :save
 
+    def update(hash)
+      hash.each { |k, v| self.send("#{k}=".to_sym, v) }
+
+      save
+    end
+
     def alert!
       Huey::Request.put("lights/#{self.id}/state", body: MultiJson.dump({alert: 'select'}))
     end

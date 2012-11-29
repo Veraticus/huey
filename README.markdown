@@ -52,6 +52,8 @@ bulb.bri = 100 # Let's dim the bulb a little bit
 bulb.ct = 500 # And make it a little more orange
 
 bulb.save # Apply all the changes you've made
+
+bulb.update(bri: 100, ct: 500) # Set and save in one step
 ```
 
 Changes to the bulb only take effect when you call `save` on it. If you prefer, `save` is aliased as `commit`.
