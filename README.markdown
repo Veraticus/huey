@@ -56,6 +56,18 @@ bulb.save # Apply all the changes you've made
 
 Changes to the bulb only take effect when you call `save` on it. If you prefer, `save` is aliased as `commit`.
 
+For your reference, the attributes on bulb you can change are:
+- **name**: Any string. The bulb's name.
+- **on**: `true` or `false`. Set and commit to activate or deactive the bulb.
+- **bri**: The bulb's brightness, between `0` and `254`. 0 is not off!
+- **hue**: For hue/saturation mode. Between `0` and `65535`. Multiply the hue degree by 182 to get this.
+- **sat**: For hue/saturation mode. Between `0` and `254`.
+- **xy**: For CIE 1931 mode. An array of two floats, like: [0.44, 0.4051]
+- **ct**: For color temperature mode. Expressed in [mireds](http://en.wikipedia.org/wiki/Mired), an integer between `154` and `500`.
+- **transitiontime**: An integer n tenths of a second, so `10` is 1 second, and `100` is 10 seconds. Use `0` for instantaneous transitions. 
+
+I used [http://rsmck.co.uk/hue](http://rsmck.co.uk/hue) as the source for all this stuff.
+
 ## Quasi-Legal Mumbo-Jumbo
 
 I am not affiliated with Phillips or the Phillips Hue in any way. I just think it's neat. While this Gem works for me, if it causes your lights to catastrophically fail it's not my fault. (Though I think the chances of this happening are pretty unlikely, you never know.)

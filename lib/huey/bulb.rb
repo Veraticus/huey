@@ -4,7 +4,7 @@ module Huey
 
   # An actual object for a bulb.
   class Bulb
-    Attributes = [:on, :bri, :hue, :sat, :xy, :ct, :name]
+    Attributes = [:on, :bri, :hue, :sat, :xy, :ct, :name, :transitiontime]
     attr_reader :id
 
     def self.all
