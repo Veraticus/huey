@@ -15,13 +15,14 @@ module Huey
         EM.open_datagram_socket('0.0.0.0', 0, Huey::SSDP::Searcher)
       end
 
-      responses = []
+      response = nil
 
       EM.run do
         ms = multicast_searcher.call
 
         ms.discovery_responses.subscribe do |notification|
-          responses << notification
+          response = notification
+          EM.stop
         end
 
         EM.add_timer(Huey::Config.ssdp_ttl) { EM.stop }
@@ -30,9 +31,9 @@ module Huey
         trap('HUP')  { EM.stop }
       end
 
-      raise Huey::Errors::CouldNotFindHue, 'No IP address found for the Hue hub' unless responses.first
+      raise Huey::Errors::CouldNotFindHue, 'No IP address found for the Hue hub' unless response
 
-      @hue_ip = responses.first[:location].match(/http:\/\/(.*?):(.*?)\//)[1]
+      @hue_ip = response[:location].match(/http:\/\/(.*?):(.*?)\//)[1]
     end
   end
 end

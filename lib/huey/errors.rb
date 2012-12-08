@@ -13,5 +13,8 @@ module Huey
 
     # PressLinkButton is raised if the link button hasn't been pressed yet.
     class PressLinkButton < Error; end
+
+    # HueResponseError is raised if we receive an odd response from the Hue.
+    class HueResponseError < Error; end
   end
 end

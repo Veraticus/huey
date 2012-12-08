@@ -3,6 +3,8 @@
 # This code is shamelessly cribbed from the yet-unreleased upnp gem:
 # https://github.com/turboladen/upnp
 # I would take it more reasonably (as its own gem) but it isn't released yet, so I just stole the parts I needed.
+#
+# (That's also my excuse for why this has no testing.)
 
 module Huey
   module SSDP
