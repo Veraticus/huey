@@ -28,7 +28,7 @@ module Huey
       end
 
       def error?(response, type)
-        if response.is_a?(Array) && response.first['error']
+        if response.is_a?(Array) && response.first && response.first['error']
           if response.first['error']['type'] == type
             true
           else

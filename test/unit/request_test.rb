@@ -28,4 +28,14 @@ class RequestTest < Test::Unit::TestCase
     assert_requested :get, "http://0.0.0.0/api/0123456789abdcef0123456789abcdef/"
     assert_requested :post, "http://0.0.0.0/api"
   end
+
+  def test_raises_unexpected_errors
+    stub_request(:get, "http://0.0.0.0/api/0123456789abdcef0123456789abcdef/").to_return(body: MultiJson.dump([{"error"=>{"type"=>404, "address"=>"/", "description"=>"bad error!"}}]), headers: {"Content-Type" => 'application/json'})
+
+    assert_raises Huey::Errors::HueResponseError do
+      Huey::Request.get
+    end
+
+    assert_requested :get, "http://0.0.0.0/api/0123456789abdcef0123456789abcdef/"
+  end
 end

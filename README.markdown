@@ -54,6 +54,10 @@ bulb.ct = 500 # And make it a little more orange
 bulb.save # Apply all the changes you've made
 
 bulb.update(bri: 100, ct: 500) # Set and save in one step
+
+bulb.rgb = '#8FF1F5' # Everyone loves aqua
+
+bulb.commit # Alias for save
 ```
 
 Changes to the bulb only take effect when you call `save` on it. If you prefer, `save` is aliased as `commit`.
@@ -69,6 +73,10 @@ For your reference, the attributes on bulb you can change are:
 - **transitiontime**: An integer. Tenths of a second, so `10` is 1 second, and `100` is 10 seconds. Use `0` for instantaneous transitions. 
 
 I used [http://rsmck.co.uk/hue](http://rsmck.co.uk/hue) as the source for all this stuff.
+
+I've added in some convenience attributes as well:
+
+- **rgb**: An HTML hex value. Will automatically convert to hue/saturation.
 
 ## Quasi-Legal Mumbo-Jumbo
 

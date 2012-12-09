@@ -3,6 +3,7 @@ require 'socket'
 require 'eventmachine'
 require 'logger'
 require 'httparty'
+require 'color'
 
 require 'huey/version'
 
