@@ -78,6 +78,22 @@ I've added in some convenience attributes as well:
 
 - **rgb**: An HTML hex value. Will automatically convert to hue/saturation.
 
+## Attribution
+
+The structure of the configuration files and the modules are taken from [Mongoid](https://github.com/mongoid/mongoid), which had some really great ideas.
+
+The SSDP discovery driver is lifted whole cloth from turboladen's [UPNP](https://github.com/turboladen/upnp). I would have used it as a Gem dependency, but unfortunately, it's not released as a Gem, so I just took it. The code is his, though, not mine.
+
 ## Quasi-Legal Mumbo-Jumbo
 
 I am not affiliated with Phillips or the Phillips Hue in any way. I just think it's neat. While this Gem works for me, if it causes your lights to catastrophically fail it's not my fault. (Though I think the chances of this happening are pretty unlikely, you never know.)
+
+## Copyright
+
+Copyright (c) 2012 Josh Symonds.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
