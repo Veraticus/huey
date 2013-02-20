@@ -41,6 +41,13 @@ class GroupTest < Test::Unit::TestCase
     assert_equal [@bulb4], Huey::Group.all[2].bulbs
   end
 
+  def test_find_group_by_name
+    g = Huey::Group.new('Living Room')
+    g.name = 'Living Room'
+
+    assert_equal g, Huey::Group.find('Living Room')
+  end
+
   def test_delegates_save_to_bulbs
     @group = Huey::Group.new(@bulb1, @bulb2, @bulb3)
 

@@ -87,7 +87,8 @@ You can also simply and sensibly create groups of bulbs.
 ```ruby
 Huey::Group.new('Living Room') # Contains all bulbs that have 'Living Room' in their name
 Huey::Group.new('Living Room', 'Foyer') # All bulbs that have either 'Living Room' or 'Foyer' in their name
-Huey::Group.new(Huey::Bulb.find(1), Huey::Bulb.find(3)) # A group specifically containing bulbs 1 and 3
+g = Huey::Group.new(Huey::Bulb.find(1), Huey::Bulb.find(3)) # A group specifically containing bulbs 1 and 3
+g.name = 'My Bulbs' # Name your group to find it later
 
 Huey::Group.import('groups.yml') # Import many groups at once from a YAML file.
 # The file should look like this:
@@ -96,7 +97,7 @@ Huey::Group.import('groups.yml') # Import many groups at once from a YAML file.
 # foyer: [Foyer]
 # bedroom: [Bedroom]
 
-group = Huey::Group.all.first
+group = Huey::Group.find('My Bulbs')
 
 group.bri = 200
 group.on = true

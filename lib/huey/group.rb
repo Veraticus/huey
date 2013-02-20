@@ -4,20 +4,25 @@ module Huey
 
   # A group is a collection of bulbs.
   class Group
-    Attributes = Huey::Bulb::Attributes + [:rgb]
-    attr_accessor :bulbs
+    Attributes = Huey::Bulb::Attributes - [:name] + [:rgb]
+    attr_accessor :bulbs, :name
 
     def self.import(file)
       hash = YAML.load_file(file)
 
       hash.each do |key, value|
-        Huey::Group.new(value)
+        g = Huey::Group.new(value)
+        g.name = key
       end
       Huey::Group.all
     end
 
     def self.all
       @all ||= []
+    end
+
+    def self.find(name)
+      Huey::Group.all.find {|g| g.name == name}
     end
 
     def initialize(*string_or_array)
