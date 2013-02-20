@@ -4,6 +4,7 @@ require 'eventmachine'
 require 'logger'
 require 'httparty'
 require 'color'
+require 'yaml'
 
 require 'huey/version'
 
@@ -12,6 +13,7 @@ require 'huey/errors'
 require 'huey/ssdp'
 require 'huey/request'
 require 'huey/bulb'
+require 'huey/group'
 
 module Huey
   extend self

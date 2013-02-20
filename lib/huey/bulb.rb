@@ -14,7 +14,11 @@ module Huey
     end
 
     def self.find(id)
-      self.all.find {|b| b.id == id || b.name == id}
+      self.all.find {|b| b.id == id || b.name.include?(id)}
+    end
+
+    def self.find_all(id)
+      self.all.select {|b| b.name.include?(id)}
     end
 
     def initialize(id, hash)

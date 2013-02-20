@@ -76,12 +76,4 @@ class BulbTest < Test::Unit::TestCase
     assert_equal 245, @bulb.bri
   end
 
-  def light_response(id = "1", name = "Living Room")
-    {id => {"state"=>{"on"=>false, "bri"=>127, "hue"=>54418, "sat"=>158, "xy"=>[0.509, 0.4149], "ct"=>459, "alert"=>"none", "effect"=>"none", "colormode"=>"hue", "reachable"=>true}, "type"=>"Extended color light", "name"=>name, "modelid"=>"LCT001", "swversion"=>"65003148", "pointsymbol"=>{"1"=>"none", "2"=>"none", "3"=>"none", "4"=>"none", "5"=>"none", "6"=>"none", "7"=>"none", "8"=>"none"}}}
-  end
-
-  def init_bulb
-    Huey::Bulb.new(light_response.keys.first, light_response.values.last)
-  end
-
 end
