@@ -28,7 +28,7 @@ module Huey
       else
         string_or_array.collect {|s| Huey::Bulb.find_all(s)}.flatten.uniq
       end
-      
+
       @attributes_to_write = {}
       Huey::Group.all << self
       self
@@ -45,6 +45,7 @@ module Huey
       @attributes_to_write = {}
       response
     end
+    alias :commit :save
 
     def update(attrs)
       bulbs.collect {|b| b.update(attrs)}

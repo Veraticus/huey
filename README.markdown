@@ -38,7 +38,9 @@ The first time you issue any Huey command, you're likely to see something like t
 Huey::Errors::PressLinkButton: 'Press the link button and try your request again'
 ```
 
-Just like the message says, go press the link button on your Hue hub, and then reissue the request. It should work the second time. Then you can get to the exciting stuff:
+Just like the message says, go press the link button on your Hue hub, and then reissue the request. It should work the second time. Then you can get to the exciting stuff.
+
+### Bulbs
 
 ```ruby
 Huey::Bulb.all # Returns an array of your bulbs
@@ -77,6 +79,31 @@ I used [http://rsmck.co.uk/hue](http://rsmck.co.uk/hue) as the source for all th
 I've added in some convenience attributes as well:
 
 - **rgb**: An HTML hex value. Will automatically convert to hue/saturation.
+
+### Groups
+
+You can also simply and sensibly create groups of bulbs.
+
+```ruby
+Huey::Group.new('Living Room') # Contains all bulbs that have 'Living Room' in their name
+Huey::Group.new('Living Room', 'Foyer') # All bulbs that have either 'Living Room' or 'Foyer' in their name
+Huey::Group.new(Huey::Bulb.find(1), Huey::Bulb.find(3)) # A group specifically containing bulbs 1 and 3
+
+Huey::Group.import('groups.yml') # Import many groups at once from a YAML file.
+# The file should look like this:
+#
+# living_room: [TV, Living Room - Fireplace]
+# foyer: [Foyer]
+# bedroom: [Bedroom]
+
+group = Huey::Group.all.first
+
+group.bri = 200
+group.on = true
+group.save # All changes you've made are committed to all the bulbs in a group
+
+group.update(bri: 200, ct: 500) # Set and save in one step
+```
 
 ## Attribution
 
