@@ -4,6 +4,8 @@ class GroupTest < Test::Unit::TestCase
 
   def setup
     super
+    Huey::Group.stubs(:all).returns([])
+
     @bulb1 = init_bulb('1', 'Living Room - TV')
     @bulb2 = init_bulb('2', 'Living Room - Fireplace')
     @bulb3 = init_bulb('3', 'Foyer')
@@ -31,9 +33,7 @@ class GroupTest < Test::Unit::TestCase
   end
 
   def test_initializes_groups_from_yml
-    Huey::Group.instance_variable_set(:@all, [])
-
-    Huey::Group.import('test/fixtures/group.yml')
+    Huey::Group.import('test/fixtures/groups.yml')
 
     assert_equal 3, Huey::Group.all.count
     assert_equal [@bulb1, @bulb2], Huey::Group.all[0].bulbs

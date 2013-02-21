@@ -3,3 +3,8 @@ gemspec
 
 gem 'rake'
 gem 'color-tools'
+gem 'chronic'
+
+group :development, :test do
+  gem 'timecop'
+end

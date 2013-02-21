@@ -1,0 +1,13 @@
+Wakeup Call:
+  group: Bedroom
+  at: 9AM
+  actions:
+    bri: 100
+    "on": true
+
+Goodnight Time:
+  group: Living Room
+  at: 12AM
+  actions:
+    bri: 10
+    "on": false

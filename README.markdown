@@ -106,6 +106,49 @@ group.save # All changes you've made are committed to all the bulbs in a group
 group.update(bri: 200, ct: 500) # Set and save in one step
 ```
 
+### Events
+
+You probably want to always do roughly the same actions to a group of bulbs. To help encapsulate that idea, we have events.
+
+```ruby
+all = Huey::Group.new(bulbs: Huey::Bulb.all)
+event = Huey::Event.new(name: 'All Lights Off', group: all, actions: {on: false})
+
+event.execute # All lights turn off
+```
+
+If you like, you can schedule an event to execute only at a particular time if you have a really gimpy scheduling system.
+
+```ruby
+event = Huey::Event.new(name: 'All Lights Off', group: all, actions: {on: false}, at: '9PM')
+
+event.execute # nothing happens unless it's 9PM
+Huey::Event.execute # run all events that should be run this second
+```
+
+It's probably easier for you to just directly invoke events from your scheduling system (cron or the like). To aid with that you can load events from a YAML file:
+
+```ruby
+Huey::Group.import('groups.yml') # So that we can find groups
+Huey::Event.import('events.yml')
+# The file should look like this:
+# Wakeup Call:
+#   group: Bedroom
+#   at: 9AM
+#   actions:
+#     bri: 100
+#     "on": true # Note the quotes, `on` is a reserved word for Yaml parsers
+#
+# Goodnight Time:
+#   group: Living Room
+#   at: 12AM
+#   actions:
+#     bri: 10
+#     "on": false # Note the quotes, `on` is a reserved word for Yaml parsers
+
+Huey::Event.find('Wakeup Call').execute
+```
+
 ## Attribution
 
 The structure of the configuration files and the modules are taken from [Mongoid](https://github.com/mongoid/mongoid), which had some really great ideas.

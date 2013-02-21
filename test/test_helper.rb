@@ -1,8 +1,8 @@
 require 'test/unit'
 require 'webmock/test_unit'
 require "mocha/setup"
+require 'timecop'
 require 'huey'
-
 
 class Test::Unit::TestCase
   def setup
