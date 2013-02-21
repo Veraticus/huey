@@ -7,10 +7,8 @@ Easy control of your Phillips Hue lights, in an attractive Gem format!
 Installing Huey is pretty simple. First include the Gem in your Gemfile:
 
 ```ruby
-gem 'huey', git: 'git://github.com/Veraticus/huey.git'
+gem 'huey'
 ```
-
-(It's not in RubyGems yet because I'm not totally sure it's actually stable enough for release.)
 
 You shouldn't need to initialize anything to make Huey work correctly, but if you want to specify some configuration options go nuts:
 
@@ -108,7 +106,7 @@ group.update(bri: 200, ct: 500) # Set and save in one step
 
 ### Events
 
-You probably want to always do roughly the same actions to a group of bulbs. To help encapsulate that idea, we have events.
+You probably want to always do the same actions over and over again to a group of bulbs. To help encapsulate that idea, we have events.
 
 ```ruby
 all = Huey::Group.new(bulbs: Huey::Bulb.all)
