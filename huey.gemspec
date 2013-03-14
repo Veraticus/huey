@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency('eventmachine', '>=1.0.0')
   s.add_dependency('httparty', '>=0.9.0')
   s.add_dependency('chronic', '>=0.9.0')
+  s.add_dependency('color', '>= 1.4.1')
 
   s.add_development_dependency('bundler', '>=0')
   s.add_development_dependency('yard', '>=0.8.3')
