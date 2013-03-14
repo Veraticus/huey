@@ -4,7 +4,7 @@ module Huey
 
   # An actual object for a bulb.
   class Bulb
-    Attributes = [:on, :bri, :hue, :sat, :xy, :ct, :name, :transitiontime, :colormode]
+    ATTRIBUTES = [:on, :bri, :hue, :sat, :xy, :ct, :name, :transitiontime, :colormode, :effect, :reachable, :alert]
     attr_reader :id
 
     def self.all
@@ -26,12 +26,12 @@ module Huey
       @changes = {}
       @name = hash['name']
 
-      (Huey::Bulb::Attributes - [:name]).each do |attribute|
+      (Huey::Bulb::ATTRIBUTES - [:name]).each do |attribute|
         instance_variable_set("@#{attribute}".to_sym, hash['state'][attribute.to_s])
       end
     end
 
-    Huey::Bulb::Attributes.each do |attribute|
+    Huey::Bulb::ATTRIBUTES.each do |attribute|
       define_method(attribute) do
         instance_variable_get("@#{attribute}".to_sym)
       end
@@ -41,7 +41,7 @@ module Huey
 
         @changes[attribute] = new_value
         instance_variable_set("@#{attribute}".to_sym, new_value)
-      end unless attribute == :colormode
+      end unless [:colormode, :reachable].include?(attribute)
     end
 
     def save
@@ -74,12 +74,12 @@ module Huey
       v = max * 100
 
       if (max != 0.0)
-        s = delta / max *100
+        s = delta / max * 100
       else
         s = 0.0
       end
 
-      if (s == 0.0) 
+      if (s == 0.0)
         h = 0.0
       else
         if (r == max)
@@ -103,7 +103,7 @@ module Huey
     end
 
     def alert!
-      Huey::Request.put("lights/#{self.id}/state", body: MultiJson.dump({alert: 'select'}))
+      self.update(alert: 'select')
     end
 
   end
