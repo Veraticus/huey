@@ -12,7 +12,7 @@ module Huey
 
           if self.error?(response, 1)
             self.register
-            return self.send(method, url, options) 
+            return self.send(method, url, options)
           end
 
           response
