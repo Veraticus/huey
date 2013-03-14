@@ -28,7 +28,7 @@ class BulbTest < Test::Unit::TestCase
   end
 
   def test_bulb_get_attributes
-    Huey::Bulb::Attributes.each do |attr|
+    Huey::Bulb::ATTRIBUTES.each do |attr|
       assert @bulb.respond_to?(attr), "#{attr} is not set"
       assert @bulb.instance_variable_defined?("@#{attr}".to_sym), "#{attr} has no instance variable"
     end
@@ -37,7 +37,7 @@ class BulbTest < Test::Unit::TestCase
   def test_bulb_set_attributes
     assert @bulb.instance_variable_defined?(:@changes), "@changes has no instance variable"
 
-    Huey::Bulb::Attributes.each do |attr|
+    Huey::Bulb::ATTRIBUTES.each do |attr|
       assert @bulb.respond_to?("#{attr}="), "#{attr} is not set" unless attr == :colormode
     end
   end

@@ -4,7 +4,7 @@ module Huey
 
   # A group is a collection of bulbs.
   class Group
-    Attributes = Huey::Bulb::Attributes - [:name] + [:rgb]
+    ATTRIBUTES = Huey::Bulb::ATTRIBUTES - [:name, :reachable] + [:rgb]
     attr_accessor :bulbs, :name
 
     def self.import(file)
@@ -39,7 +39,7 @@ module Huey
       self
     end
 
-    Huey::Group::Attributes.each do |attribute|
+    Huey::Group::ATTRIBUTES.each do |attribute|
       define_method("#{attribute}=".to_sym) do |new_value|
         @attributes_to_write[attribute] = new_value
       end
