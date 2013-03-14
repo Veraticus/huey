@@ -18,7 +18,7 @@ module Huey
     end
 
     def self.find_all(id)
-      self.all.select {|b| b.name.include?(id)}
+      self.all.select {|b| b.id == id || b.name.include?(id.to_s)}
     end
 
     def initialize(id, hash)
@@ -31,17 +31,17 @@ module Huey
       end
     end
 
-    Huey::Bulb::Attributes.each do |attribute|
+    (Huey::Bulb::Attributes.each - [:colormode]) do |attribute|
       define_method(attribute) do
         instance_variable_get("@#{attribute}".to_sym)
       end
 
       define_method("#{attribute}=".to_sym) do |new_value|
-        return true if self.send(attribute) == new_value
+        return new_value if self.send(attribute) == new_value
 
         @changes[attribute] = new_value
         instance_variable_set("@#{attribute}".to_sym, new_value)
-      end unless attribute == :colormode
+      end
     end
 
     def save
