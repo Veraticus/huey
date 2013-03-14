@@ -15,10 +15,10 @@ You shouldn't need to initialize anything to make Huey work correctly, but if yo
 ```ruby
 Huey.configure do |config|
   # For discovering the Hue hub, usually you won't have to change this
-  config.ssdp_ip = '239.255.255.250'
+  config.ssdp_ip = '239.255.255.250' 
 
   # Also for discovering the Hue hub
-  config.ssdp_port = 1900
+  config.ssdp_port = 1900            
 
   # If you get constant errors about not being able to find the Hue hub and you're sure it's connected, increase this
   config.ssdp_ttl = 1
@@ -70,7 +70,7 @@ For your reference, the attributes on bulb you can change are:
 - **sat**: For hue/saturation mode. Between `0` and `254`.
 - **xy**: For CIE 1931 mode. An array of two floats, like: [0.44, 0.4051]
 - **ct**: For color temperature mode. Expressed in [mireds](http://en.wikipedia.org/wiki/Mired), an integer between `154` and `500`.
-- **transitiontime**: An integer. Tenths of a second, so `10` is 1 second, and `100` is 10 seconds. Use `0` for instantaneous transitions.
+- **transitiontime**: An integer. Tenths of a second, so `10` is 1 second, and `100` is 10 seconds. Use `0` for instantaneous transitions. 
 
 I used [http://rsmck.co.uk/hue](http://rsmck.co.uk/hue) as the source for all this stuff.
 
@@ -156,6 +156,12 @@ The SSDP discovery driver is lifted whole cloth from turboladen's [UPNP](https:/
 ## Quasi-Legal Mumbo-Jumbo
 
 I am not affiliated with Phillips or the Phillips Hue in any way. I just think it's neat. While this Gem works for me, if it causes your lights to catastrophically fail it's not my fault. (Though I think the chances of this happening are pretty unlikely, you never know.)
+
+## Contributors
+
+Many thanks to the following diligent contributors, without whom this project would not be nearly as awesome:
+
+* [sankage](https://github.com/sankage)
 
 ## Copyright
 
