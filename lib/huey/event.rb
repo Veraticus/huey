@@ -14,7 +14,7 @@ module Huey
         value.each do |k, v|
           options[k.to_sym] = v
         end
-        
+
         Huey::Event.new(options)
       end
       Huey::Event.all
