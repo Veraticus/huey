@@ -24,7 +24,7 @@ module Huey
     block_given? ? yield(Huey::Config) : Huey::Config
   end
   alias :config :configure
-  
+
   def logger
     Huey::Config.logger
   end
