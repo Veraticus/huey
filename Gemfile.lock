@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    huey (1.0.1)
+    huey (1.1.0)
       chronic (>= 0.9.0)
       color (>= 1.4.1)
       eventmachine (>= 1.0.0)
@@ -22,7 +22,7 @@ GEM
     metaclass (0.0.1)
     mocha (0.13.1)
       metaclass (~> 0.0.1)
-    multi_json (1.6.1)
+    multi_json (1.7.2)
     multi_xml (0.5.3)
     rake (0.9.5)
     timecop (0.5.9.2)

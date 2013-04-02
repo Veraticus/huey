@@ -103,6 +103,7 @@ module Huey
     end
 
     def alert!
+      self.update(alert: 'none') if self.alert != 'none'
       self.update(alert: 'select')
     end
 

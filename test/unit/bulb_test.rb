@@ -27,6 +27,15 @@ class BulbTest < Test::Unit::TestCase
     @bulb.alert!
   end
 
+  def test_send_second_alert_to_bulb
+    @bulb.alert = 'select'
+
+    Huey::Request.expects(:put).with("lights/1/state", body: MultiJson.dump({alert: 'none'})).once.returns(true)
+    Huey::Request.expects(:put).with("lights/1/state", body: MultiJson.dump({alert: 'select'})).once.returns(true)
+
+    @bulb.alert!
+  end
+
   def test_bulb_get_attributes
     Huey::Bulb::ATTRIBUTES.each do |attr|
       assert @bulb.respond_to?(attr), "#{attr} is not set"
