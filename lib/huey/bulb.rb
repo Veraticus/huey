@@ -35,6 +35,8 @@ module Huey
       (Huey::Bulb::ATTRIBUTES - [:name]).each do |attribute|
         instance_variable_set("@#{attribute}".to_sym, hash['state'][attribute.to_s])
       end
+
+      self
     end
 
     Huey::Bulb::ATTRIBUTES.each do |attribute|
