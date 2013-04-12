@@ -26,6 +26,12 @@ module Huey
       @changes = {}
       @name = hash['name']
 
+      reload(hash)
+    end
+
+    def reload(hash = nil)
+      hash ||= Huey::Request.get("lights/#{self.id}")
+
       (Huey::Bulb::ATTRIBUTES - [:name]).each do |attribute|
         instance_variable_set("@#{attribute}".to_sym, hash['state'][attribute.to_s])
       end

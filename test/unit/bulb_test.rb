@@ -85,4 +85,16 @@ class BulbTest < Test::Unit::TestCase
     assert_equal 245, @bulb.bri
   end
 
+  def test_refresh_state
+    response = light_response('2', 'Bedroom').values.first
+    response['state'].merge!('on' => true)
+    Huey::Request.expects(:get).once.returns(response)
+
+    @bulb = Huey::Bulb.find(2)
+    assert_equal false, @bulb.on
+
+    @bulb.reload
+    assert_equal true, @bulb.on
+  end
+
 end

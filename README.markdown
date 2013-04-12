@@ -58,6 +58,8 @@ bulb.update(bri: 100, ct: 500) # Set and save in one step
 bulb.rgb = '#8FF1F5' # Everyone loves aqua
 
 bulb.commit # Alias for save
+
+bulb.reload # Refresh changes to the bulb, made perhaps with another app
 ```
 
 Changes to the bulb only take effect when you call `save` on it. If you prefer, `save` is aliased as `commit`.
