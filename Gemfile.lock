@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    huey (1.1.0)
+    huey (1.2.0)
       chronic (>= 0.9.0)
       color (>= 1.4.1)
       eventmachine (>= 1.0.0)
@@ -39,8 +39,8 @@ DEPENDENCIES
   chronic
   color-tools
   huey!
-  mocha (>= 0.13.1)
+  mocha
   rake
   timecop
-  webmock (>= 1.9.0)
+  webmock
   yard (>= 0.8.3)

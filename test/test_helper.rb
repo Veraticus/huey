@@ -12,7 +12,7 @@ class Test::Unit::TestCase
   end
 
   def set_hue_ip(ip)
-    Huey::SSDP.instance_variable_set(:@hue_ip, ip)
+    Huey::Request.stubs(:hue_ip).returns(ip)
   end
 
   def fake_searcher

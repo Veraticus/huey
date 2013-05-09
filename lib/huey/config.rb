@@ -9,9 +9,11 @@ module Huey #:nodoc
     extend Options
 
     # All the default options.
+    option :ssdp, default: false
     option :ssdp_ip, default: '239.255.255.250'
     option :ssdp_port, default: 1900
     option :ssdp_ttl, default: 1
+    option :hue_ip, default: nil
     option :uuid, default: '0123456789abdcef0123456789abcdef'
 
     # The default logger for Huey: either the Rails logger or just stdout.

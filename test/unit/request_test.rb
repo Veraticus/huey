@@ -38,4 +38,13 @@ class RequestTest < Test::Unit::TestCase
 
     assert_requested :get, "http://0.0.0.0/api/0123456789abdcef0123456789abcdef/"
   end
+
+  def test_uses_configured_ip_instead_of_searching
+    Huey::Request.unstub(:hue_ip)
+    Huey::Config.hue_ip = '123.456.789.012'
+
+    assert_equal '123.456.789.012', Huey::Request.hue_ip
+
+    Huey::Config.hue_ip = nil
+  end
 end

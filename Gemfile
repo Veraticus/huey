@@ -7,4 +7,6 @@ gem 'chronic'
 
 group :development, :test do
   gem 'timecop'
+  gem 'webmock'
+  gem 'mocha'
 end

@@ -3,8 +3,8 @@ require 'test_helper'
 class SSDPTest < Test::Unit::TestCase
 
   def setup
+    Huey::SSDP.instance_variable_set(:@hue_ip, nil)
     super
-    set_hue_ip(nil)
   end
 
   def test_raises_error_with_no_ip
