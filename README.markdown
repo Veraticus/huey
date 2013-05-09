@@ -14,23 +14,24 @@ You shouldn't need to initialize anything to make Huey work correctly, but if yo
 
 ```ruby
 Huey.configure do |config|
-  # Huey now uses the Phillips Hue API to discover local bridges, but you can specify the Hue IP manually if your
-  # Huey server is not on your local network.
-  config.hue_ip = 123.456.789.012
+  # Huey now uses the Phillips Hue API to discover local bridges, but you can specify the Hue IP
+  # manually if your Huey server is not on your local network.
+  config.hue_ip = '123.456.789.012'
 
   # SSDP is disabled by default.
   config.ssdp = true
 
-  # For discovering the Hue hub, usually you won't have to change this
+  # For discovering the Hue hub, usually you won't have to change this.
   config.ssdp_ip = '239.255.255.250'
 
-  # Also for discovering the Hue hub
+  # Also for discovering the Hue hub.
   config.ssdp_port = 1900
 
-  # If you get constant errors about not being able to find the Hue hub and you're sure it's connected, increase this
+  # If you get constant errors about not being able to find the Hue hub and you're sure
+  # it's connected, increase this.
   config.ssdp_ttl = 1
 
-  # Change this if you don't like the included uuid
+  # Change this if you don't like the included uuid.
   config.uuid = '0123456789abdcef0123456789abcdef'
 end
 ```
