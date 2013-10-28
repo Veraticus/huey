@@ -6,6 +6,7 @@ require 'httparty'
 require 'color'
 require 'yaml'
 require 'chronic'
+require 'multi_json'
 
 require 'huey/version'
 
