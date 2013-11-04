@@ -47,4 +47,14 @@ class RequestTest < Test::Unit::TestCase
 
     Huey::Config.hue_ip = nil
   end
+
+  def test_uses_configured_ip_
+    Huey::Config.hue_port = 12345
+
+    stub_request(:any, "http://0.0.0.0:12345/api/0123456789abdcef0123456789abcdef/")
+    Huey::Request.get
+
+    assert_requested :get, "http://0.0.0.0:12345/api/0123456789abdcef0123456789abcdef/"
+  end
+
 end
