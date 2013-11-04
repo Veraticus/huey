@@ -1,29 +1,31 @@
 PATH
   remote: .
   specs:
-    huey (1.2.0)
+    huey (2.0.0)
       chronic (>= 0.9.0)
       color (>= 1.4.1)
       eventmachine (>= 1.0.0)
       httparty (>= 0.9.0)
+      multi_json (~> 1.8)
 
 GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.3.2)
     chronic (0.9.1)
-    color (1.4.1)
+    color (1.4.2)
     color-tools (1.3.0)
     crack (0.3.1)
     eventmachine (1.0.3)
-    httparty (0.10.2)
-      multi_json (~> 1.0)
+    httparty (0.12.0)
+      json (~> 1.8)
       multi_xml (>= 0.5.2)
+    json (1.8.1)
     metaclass (0.0.1)
     mocha (0.13.1)
       metaclass (~> 0.0.1)
-    multi_json (1.7.2)
-    multi_xml (0.5.3)
+    multi_json (1.8.2)
+    multi_xml (0.5.5)
     rake (0.9.5)
     timecop (0.5.9.2)
     webmock (1.9.0)

@@ -14,6 +14,7 @@ module Huey #:nodoc
     option :ssdp_port, default: 1900
     option :ssdp_ttl, default: 1
     option :hue_ip, default: nil
+    option :hue_port, default: 80
     option :uuid, default: '0123456789abdcef0123456789abcdef'
 
     # The default logger for Huey: either the Rails logger or just stdout.
