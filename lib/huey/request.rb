@@ -7,7 +7,7 @@ module Huey
       [:get, :post, :put, :delete].each do |method|
         define_method(method) do |url = '', options = {}|
           response = HTTParty.send(method,
-            "http://#{self.hue_ip}/api/#{Huey::Config.uuid}/#{url}",
+            "http://#{self.hue_ip}:#{Huey::Config.hue_port}/api/#{Huey::Config.uuid}/#{url}",
             options).parsed_response
 
           if self.error?(response, 1)
@@ -20,7 +20,7 @@ module Huey
       end
 
       def register
-        response = HTTParty.post("http://#{self.hue_ip}/api",
+        response = HTTParty.post("http://#{self.hue_ip}:#{Huey::Config.hue_port}/api",
           body: MultiJson.dump({username: Huey::Config.uuid,
                                 devicetype: 'Huey'})).parsed_response
 
