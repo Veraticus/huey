@@ -8,9 +8,13 @@ module Huey
     attr_reader :id
 
     def self.all
-      @all ||= Huey::Request.get['lights'].collect do |id, hash|
-        Bulb.new(id, hash)
+      return @all if @all
+
+      @all = Huey::Group.new
+      Huey::Request.get['lights'].collect do |id, hash|
+        @all.bulbs << Bulb.new(id, hash)
       end
+      @all
     end
 
     def self.find(id)
@@ -18,7 +22,9 @@ module Huey
     end
 
     def self.find_all(id)
-      self.all.select {|b| b.id == id || b.name.include?(id.to_s)}
+      group = Huey::Group.new
+      self.all.select {|b| b.id == id || b.name.include?(id.to_s)}.each {|b| group.bulbs << b}
+      group
     end
 
     def initialize(id, hash)

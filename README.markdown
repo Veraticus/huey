@@ -14,21 +14,23 @@ You shouldn't need to initialize anything to make Huey work correctly, but if yo
 
 ```ruby
 Huey.configure do |config|
-  # Huey now uses the Phillips Hue API to discover local bridges, but you can specify the Hue IP
-  # manually if your Huey server is not on your local network.
+  # Huey now uses the Phillips Hue API to discover local bridges, but you can
+  # specify the Hue IP manually if your Huey server is not on your
+  # local network.
   config.hue_ip = '123.456.789.012'
 
-  # SSDP is disabled by default.
+  # SSDP is disabled by default. Do not enable it unless you have a compelling
+  # reason to do so.
   config.ssdp = true
 
-  # For discovering the Hue hub, usually you won't have to change this.
+  # Specify the SSDP IP. Do not use this unless you're using SSDP broadcasting
+  # at a non-standard IP.
   config.ssdp_ip = '239.255.255.250'
 
-  # Also for discovering the Hue hub.
+  # As per the above, but for a non-standard port.
   config.ssdp_port = 1900
 
-  # If you get constant errors about not being able to find the Hue hub and you're sure
-  # it's connected, increase this.
+  # If your SSDP connections keep timing out, increase this.
   config.ssdp_ttl = 1
 
   # Change this if you don't like the included uuid.
@@ -49,25 +51,27 @@ Just like the message says, go press the link button on your Hue hub, and then r
 ### Bulbs
 
 ```ruby
-Huey::Bulb.all # Returns an array of your bulbs
-
 bulb = Huey::Bulb.find(1) # Finds the bulb with the ID of 1
 bulb = Huey::Bulb.find('Living Room') # Finds the bulb with the name 'Living Room'
 
-bulb.alert! # Flashes the bulb in question once and immediately, useful for checking connectivity
+bulb.alert! # Flashes the bulb in question once and immediately, useful
+            # for checking connectivity
 
 bulb.bri = 100 # Let's dim the bulb a little bit
-bulb.ct = 500 # And make it a little more orange
-
-bulb.save # Apply all the changes you've made
+bulb.ct = 500  # And make it a little more orange
+bulb.save      # Apply all the changes you've made
 
 bulb.update(bri: 100, ct: 500) # Set and save in one step
 
 bulb.rgb = '#8FF1F5' # Everyone loves aqua
-
-bulb.commit # Alias for save
+bulb.commit          # Alias for save
 
 bulb.reload # Refresh changes to the bulb, made perhaps with another app
+
+Huey::Bulb.all # Returns an array of your bulbs
+Huey::Bulb.all.alert! # Makes all your bulbs start flashing
+Huey::Bulb.all.update(bri: 255, on: true) # Turn on all your bulbs and
+                                          # increase brightness to max
 ```
 
 Changes to the bulb only take effect when you call `save` on it. If you prefer, `save` is aliased as `commit`.
@@ -90,7 +94,9 @@ I've added in some convenience attributes as well:
 
 ### Groups
 
-You can also simply and sensibly create groups of bulbs.
+Returned arrays of bulbs are grouped into a convenience class called `Huey::Group`. It acts like an array, but any huey-specific method you pass in will be invoked on all the bulbs.
+
+You can also simply and sensibly create groups of bulbs yourself if you like.
 
 ```ruby
 Huey::Group.new('Living Room') # Contains all bulbs that have 'Living Room' in their name

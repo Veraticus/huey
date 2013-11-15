@@ -27,6 +27,7 @@ module Huey
     end
 
     def initialize(*string_or_array)
+      @bulbs = []
       string_or_array = string_or_array.first if string_or_array.first.is_a?(Array)
 
       self.bulbs = if string_or_array.first.is_a?(Bulb)
@@ -36,7 +37,7 @@ module Huey
       end
 
       @attributes_to_write = {}
-      Huey::Group.all << self
+      Huey::Group.all << self unless self.bulbs.nil? || self.bulbs.empty?
       self
     end
 
@@ -47,14 +48,14 @@ module Huey
     end
 
     def save
-      response = bulbs.collect {|b| b.update(@attributes_to_write)}
+      response = self.collect {|b| b.update(@attributes_to_write)}
       @attributes_to_write = {}
       response
     end
     alias :commit :save
 
     def update(attrs)
-      bulbs.collect {|b| b.update(attrs)}
+      self.collect {|b| b.update(attrs)}
     end
 
     def each(&block)
@@ -64,8 +65,10 @@ module Huey
     def method_missing(meth, *args, &block)
       if !self.bulbs.empty? && self.bulbs.first.respond_to?(meth)
         h = {}
-        bulbs.each {|b| h[b.id] = b.send(meth, *args, &block)}
+        self.each {|b| h[b.id] = b.send(meth, *args, &block)}
         h
+      elsif self.bulbs.respond_to?(meth)
+        bulbs.send(meth, *args, &block)
       else
         super
       end

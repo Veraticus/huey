@@ -48,6 +48,12 @@ class GroupTest < MiniTest::Test
     assert_equal g, Huey::Group.find('Living Room')
   end
 
+  def test_not_included_in_all_if_empty
+    g = Huey::Group.new
+
+    assert !Huey::Group.all.include?(g)
+  end
+
   def test_delegates_save_to_bulbs
     @group = Huey::Group.new(@bulb1, @bulb2, @bulb3)
 
