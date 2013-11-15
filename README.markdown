@@ -51,7 +51,7 @@ Just like the message says, go press the link button on your Hue hub, and then r
 ### Bulbs
 
 ```ruby
-bulb = Huey::Bulb.find(1) # Finds the bulb with the ID of 1
+bulb = Huey::Bulb.find(1)             # Finds the bulb with the ID of 1
 bulb = Huey::Bulb.find('Living Room') # Finds the bulb with the name 'Living Room'
 
 bulb.alert! # Flashes the bulb in question once and immediately, useful
@@ -68,10 +68,10 @@ bulb.commit          # Alias for save
 
 bulb.reload # Refresh changes to the bulb, made perhaps with another app
 
-Huey::Bulb.all # Returns an array of your bulbs
-Huey::Bulb.all.alert! # Makes all your bulbs start flashing
-Huey::Bulb.all.update(bri: 255, on: true) # Turn on all your bulbs and
-                                          # increase brightness to max
+Huey::Bulb.all                            # Returns a group of all bulbs
+Huey::Bulb.all.alert!                     # Makes all your bulbs start flashing
+Huey::Bulb.all.update(bri: 255, on: true) # Turn on all your bulbs and increase
+                                          # brightness to max
 ```
 
 Changes to the bulb only take effect when you call `save` on it. If you prefer, `save` is aliased as `commit`.
@@ -178,6 +178,8 @@ I am not affiliated with Phillips or the Phillips Hue in any way. I just think i
 Many thanks to the following diligent contributors, without whom this project would not be nearly as awesome:
 
 * [sankage](https://github.com/sankage)
+* [raspygold](https://github.com/raspygold)
+* [larskrantz](https://github.com/larskrantz)
 
 ## Copyright
 
