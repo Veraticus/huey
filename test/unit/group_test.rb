@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GroupTest < Test::Unit::TestCase
+class GroupTest < MiniTest::Test
 
   def setup
     super
@@ -84,5 +84,31 @@ class GroupTest < Test::Unit::TestCase
     @group = Huey::Group.new(@bulb1, @bulb2, @bulb3)
 
     assert_equal @group.bri, {1=>127, 2=>127, 3=>127}
+  end
+
+  def test_implements_each
+    @group = Huey::Group.new(@bulb1, @bulb2, @bulb3)
+
+    [@bulb1, @bulb2, @bulb3].each do |bulb|
+      Huey::Request.expects(:put).with("lights/#{bulb.id}/state", body: MultiJson.dump({on: true, bri: 101})).once.returns(true)
+    end
+
+
+    @group.each {|bulb| bulb.update(on: true, bri: 101)}
+
+    [@bulb1, @bulb2, @bulb3].each do |bulb|
+      assert_equal true, bulb.on
+      assert_equal 101, bulb.bri
+    end
+  end
+
+  def test_includes_enumerable
+    @group = Huey::Group.new(@bulb1, @bulb2, @bulb3)
+
+    [@bulb1, @bulb2, @bulb3].each do |bulb|
+      Huey::Request.expects(:put).with("lights/#{bulb.id}/state", body: MultiJson.dump({on: true, bri: 102})).once.returns(true)
+    end
+
+    assert_equal [true, true, true], @group.collect {|bulb| bulb.update(on: true, bri: 102)}
   end
 end

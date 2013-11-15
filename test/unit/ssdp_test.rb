@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SSDPTest < Test::Unit::TestCase
+class SSDPTest < MiniTest::Test
 
   def setup
     Huey::SSDP.instance_variable_set(:@hue_ip, nil)

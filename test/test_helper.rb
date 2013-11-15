@@ -1,10 +1,11 @@
-require 'test/unit'
-require 'webmock/test_unit'
-require "mocha/setup"
+require 'minitest/autorun'
+require 'webmock/minitest'
 require 'timecop'
 require 'huey'
+require "mocha/setup"
 
-class Test::Unit::TestCase
+
+class MiniTest::Test
   def setup
     super
     # Prevent real connections to the hub

@@ -1,10 +1,11 @@
 require 'test_helper'
 
-class BulbTest < Test::Unit::TestCase
+class BulbTest < MiniTest::Test
 
   def setup
     super
     @bulb = init_bulb
+    Huey::Bulb.instance_variable_set(:@all, nil)
   end
 
   def test_initializes_bulb_from_hash
@@ -86,9 +87,11 @@ class BulbTest < Test::Unit::TestCase
   end
 
   def test_refresh_state
-    response = light_response('2', 'Bedroom').values.first
-    response['state'].merge!('on' => true)
-    Huey::Request.expects(:get).once.returns(response)
+    off_response = light_response('2', 'Bedroom').values.first
+    Huey::Request.expects(:get).with(nil).once.returns('lights' => {'2' => off_response})
+    on_response = light_response('2', 'Bedroom').values.first
+    on_response['state'].merge!('on' => true)
+    Huey::Request.expects(:get).with("lights/2").once.returns(on_response)
 
     @bulb = Huey::Bulb.find(2)
     assert_equal false, @bulb.on

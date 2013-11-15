@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class EventTest < Test::Unit::TestCase
+class EventTest < MiniTest::Test
 
   def setup
     super

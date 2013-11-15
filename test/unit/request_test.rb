@@ -1,10 +1,11 @@
 require 'test_helper'
 
-class RequestTest < Test::Unit::TestCase
+class RequestTest < MiniTest::Test
 
   def setup
     super
     set_hue_ip('0.0.0.0')
+    Huey::Config.hue_port = 80
   end
 
   [:get, :post, :put, :delete].each do |m|
@@ -48,7 +49,7 @@ class RequestTest < Test::Unit::TestCase
     Huey::Config.hue_ip = nil
   end
 
-  def test_uses_configured_ip_
+  def test_uses_configured_ip
     Huey::Config.hue_port = 12345
 
     stub_request(:any, "http://0.0.0.0:12345/api/0123456789abdcef0123456789abcdef/")

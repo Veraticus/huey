@@ -4,6 +4,7 @@ module Huey
 
   # A group is a collection of bulbs.
   class Group
+    include Enumerable
     ATTRIBUTES = Huey::Bulb::ATTRIBUTES - [:name, :reachable] + [:rgb]
     attr_accessor :bulbs, :name
 
@@ -54,6 +55,10 @@ module Huey
 
     def update(attrs)
       bulbs.collect {|b| b.update(attrs)}
+    end
+
+    def each(&block)
+      bulbs.each {|b| block.call(b)}
     end
 
     def method_missing(meth, *args, &block)
