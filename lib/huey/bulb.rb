@@ -12,7 +12,7 @@ module Huey
     end
 
     def self.reload
-      Huey::Group.new.tap do |group|
+      @all = Huey::Group.new.tap do |group|
         Huey::Request.get['lights'].collect do |id, hash|
           group.bulbs << Bulb.new(id, hash)
         end
