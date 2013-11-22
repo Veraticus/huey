@@ -4,49 +4,48 @@ Easy control of your Phillips Hue lights, in an attractive Gem format!
 
 ## Installation
 
-Installing Huey is pretty simple. First include the Gem in your Gemfile:
+### From the Terminal
+
+You probably want to start experimenting through IRB. Install the gem from your terminal:
+
+```
+$ gem install huey
+```
+
+### In an Application
+
+Add Huey to your `Gemfile`:
 
 ```ruby
 gem 'huey'
 ```
 
-You shouldn't need to initialize anything to make Huey work correctly, but if you want to specify some configuration options go nuts:
-
-```ruby
-Huey.configure do |config|
-  # Huey now uses the Phillips Hue API to discover local bridges, but you can
-  # specify the Hue IP manually if your Huey server is not on your
-  # local network.
-  config.hue_ip = '123.456.789.012'
-
-  # SSDP is disabled by default. Do not enable it unless you have a compelling
-  # reason to do so.
-  config.ssdp = true
-
-  # Specify the SSDP IP. Do not use this unless you're using SSDP broadcasting
-  # at a non-standard IP.
-  config.ssdp_ip = '239.255.255.250'
-
-  # As per the above, but for a non-standard port.
-  config.ssdp_port = 1900
-
-  # If your SSDP connections keep timing out, increase this.
-  config.ssdp_ttl = 1
-
-  # Change this if you don't like the included uuid.
-  config.uuid = '0123456789abdcef0123456789abcdef'
-end
-```
+Then run `bundle` from your terminal.
 
 ## Usage
 
-The first time you issue any Huey command, you're likely to see something like this:
+### Getting Started
 
-```ruby
-Huey::Errors::PressLinkButton: 'Press the link button and try your request again'
+Your Hue bridge maintains a "whitelist" of known users who are allowed to access the API. Huey by default uses `'0123456789abdcef0123456789abcdef'` as the indentifier for any application using the gem. (*Note: Want a more unique/secure username? Check out the Configuration section below*)
+
+Open up an IRB session:
+
+```irb
+$ irb
+2.0.0-p247 :001 > require 'huey'
+ => true 
+2.0.0-p247 :002 > Huey::Request.register
+Huey::Errors::PressLinkButton: Press the link button and try your request again
 ```
 
-Just like the message says, go press the link button on your Hue hub, and then reissue the request. It should work the second time. Then you can get to the exciting stuff.
+That's expected the first time Huey is used with your bridge. Go press the big white link button on the bridge then retry the `register` call **within 30 seconds**:
+
+```irb
+2.0.0-p247 :003 > Huey::Request.register
+ => [{"success"=>{"username"=>"0123456789abdcef0123456789abcdef"}}] 
+```
+
+Now you're ready to go! Since the username is stored in the bridge, you won't have to do this again.
 
 ### Bulbs
 
@@ -161,6 +160,36 @@ Huey::Event.import('events.yml')
 #     "on": false # Note the quotes, `on` is a reserved word for Yaml parsers
 
 Huey::Event.find('Wakeup Call').execute
+```
+
+## Configuration Details
+
+You shouldn't need to initialize anything to make Huey work correctly, but you can define several configuration options:
+
+```ruby
+Huey.configure do |config|
+  # Huey now uses the Phillips Hue API to discover local bridges, but you can
+  # specify the Hue IP manually if your Huey server is not on your
+  # local network.
+  config.hue_ip = '123.456.789.012'
+
+  # SSDP is disabled by default. Do not enable it unless you have a compelling
+  # reason to do so.
+  config.ssdp = true
+
+  # Specify the SSDP IP. Do not use this unless you're using SSDP broadcasting
+  # at a non-standard IP.
+  config.ssdp_ip = '239.255.255.250'
+
+  # As per the above, but for a non-standard port.
+  config.ssdp_port = 1900
+
+  # If your SSDP connections keep timing out, increase this.
+  config.ssdp_ttl = 1
+
+  # Change this if you don't like the included uuid.
+  config.uuid = '0123456789abdcef0123456789abcdef'
+end
 ```
 
 ## Attribution

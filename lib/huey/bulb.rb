@@ -8,13 +8,15 @@ module Huey
     attr_reader :id
 
     def self.all
-      return @all if @all
+      @all ||= reload
+    end
 
-      @all = Huey::Group.new
-      Huey::Request.get['lights'].collect do |id, hash|
-        @all.bulbs << Bulb.new(id, hash)
+    def self.reload
+      @all = Huey::Group.new.tap do |group|
+        Huey::Request.get['lights'].collect do |id, hash|
+          group.bulbs << Bulb.new(id, hash)
+        end
       end
-      @all
     end
 
     def self.find(id)

@@ -22,6 +22,13 @@ class BulbTest < MiniTest::Test
     assert_equal Huey::Bulb.all.last.id, 2
   end
 
+  def test_all_retries_the_request_when_the_previous_request_was_unauthorized
+    2.times do
+      Huey::Request.expects(:get).raises(Huey::Errors::PressLinkButton).once
+      assert_raises(Huey::Errors::PressLinkButton){ Huey::Bulb.all }
+    end
+  end
+
   def test_send_alert_to_bulb
     Huey::Request.expects(:put).with("lights/1/state", body: MultiJson.dump({alert: 'select'})).once.returns(true)
 
