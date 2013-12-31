@@ -20,7 +20,7 @@ module Huey
     end
 
     def self.find(id)
-      self.all.find {|b| b.id == id || b.name.include?(id.to_s)}
+      self.all.find {|b| b.id == id || b.name == id.to_s}
     end
 
     def self.find_all(id)
@@ -61,7 +61,7 @@ module Huey
     end
 
     def save
-      Huey::Request.put("lights/#{self.id}/state", body: MultiJson.dump(@changes))
+      Huey::Request.put("lights/#{self.id}/state", body: changes_json)
       @changes = {}
       true
     end
@@ -121,6 +121,10 @@ module Huey
     def alert!
       self.update(alert: 'none') if self.alert != 'none'
       self.update(alert: 'select')
+    end
+
+    def changes_json
+      MultiJson.dump(@changes)
     end
 
   end

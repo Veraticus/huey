@@ -32,28 +32,6 @@ class GroupTest < MiniTest::Test
     assert_equal [@bulb1, @bulb2, @bulb3], @group.bulbs
   end
 
-  def test_initializes_groups_from_yml
-    Huey::Group.import('test/fixtures/groups.yml')
-
-    assert_equal 3, Huey::Group.all.count
-    assert_equal [@bulb1, @bulb2], Huey::Group.all[0].bulbs
-    assert_equal [@bulb3], Huey::Group.all[1].bulbs
-    assert_equal [@bulb4], Huey::Group.all[2].bulbs
-  end
-
-  def test_find_group_by_name
-    g = Huey::Group.new('Living Room')
-    g.name = 'Living Room'
-
-    assert_equal g, Huey::Group.find('Living Room')
-  end
-
-  def test_not_included_in_all_if_empty
-    g = Huey::Group.new
-
-    assert !Huey::Group.all.include?(g)
-  end
-
   def test_delegates_save_to_bulbs
     @group = Huey::Group.new(@bulb1, @bulb2, @bulb3)
 
@@ -116,5 +94,36 @@ class GroupTest < MiniTest::Test
     end
 
     assert_equal [true, true, true], @group.collect {|bulb| bulb.update(on: true, bri: 102)}
+  end
+
+  def test_writes_group_to_hue_if_changed
+    @group = Huey::Group.new(@bulb1, @bulb2, @bulb3)
+
+    [@bulb1, @bulb2, @bulb3].each do |bulb|
+      bulb.expects(:save).once.returns(true)
+    end
+
+    Huey::Request.expects(:post).with("groups", body: MultiJson.dump({name: 'Test Group', lights: ['1', '2', '3']})).once.returns([{"success"=>{"id"=>"/groups/1"}}])
+
+    @group.name = 'Test Group'
+    @group.save
+
+    assert_equal 1, @group.id
+  end
+
+  def test_updates_group_to_hue
+    @group = Huey::Group.new(@bulb1, @bulb2, @bulb3)
+    @group.instance_variable_set(:@id, 1)
+
+    [@bulb1, @bulb2, @bulb3].each do |bulb|
+      bulb.expects(:save).once.returns(true)
+    end
+
+    Huey::Request.expects(:put).with("groups/1", body: MultiJson.dump({name: 'Test Group', lights: ['1', '2', '3']})).once.returns(true)
+
+    @group.name = 'Test Group'
+    @group.save
+
+    assert_equal 1, @group.id
   end
 end

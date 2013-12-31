@@ -1,6 +1,6 @@
 # Huey
 
-Easy control of your Phillips Hue lights, in an attractive Gem format!
+Easy control of your Philips Hue lights, in an attractive Gem format!
 
 ## Installation
 
@@ -20,29 +20,29 @@ Add Huey to your `Gemfile`:
 gem 'huey'
 ```
 
-Then run `bundle` from your terminal.
+Then run `bundleinstall` from your terminal.
 
 ## Usage
 
 ### Getting Started
 
-Your Hue bridge maintains a "whitelist" of known users who are allowed to access the API. Huey by default uses `'0123456789abdcef0123456789abcdef'` as the indentifier for any application using the gem. (*Note: Want a more unique/secure username? Check out the Configuration section below*)
+Your Hue bridge maintains a "whitelist" of known users who are allowed to access the API. Huey by default uses `'0123456789abdcef0123456789abcdef'` as the indentifier for any application using the gem. *Want a more unique/secure username? Check out the Configuration section below.*
 
 Open up an IRB session:
 
 ```irb
 $ irb
-2.0.0-p247 :001 > require 'huey'
- => true 
-2.0.0-p247 :002 > Huey::Request.register
+2.1.0 :001 > require 'huey'
+ => true
+ 2.1.0 :002 > Huey::Request.register
 Huey::Errors::PressLinkButton: Press the link button and try your request again
 ```
 
 That's expected the first time Huey is used with your bridge. Go press the big white link button on the bridge then retry the `register` call **within 30 seconds**:
 
 ```irb
-2.0.0-p247 :003 > Huey::Request.register
- => [{"success"=>{"username"=>"0123456789abdcef0123456789abcdef"}}] 
+2.1.0 :003 > Huey::Request.register
+ => [{"success"=>{"username"=>"0123456789abdcef0123456789abcdef"}}]
 ```
 
 Now you're ready to go! Since the username is stored in the bridge, you won't have to do this again.
@@ -102,22 +102,16 @@ Huey::Group.new('Living Room') # Contains all bulbs that have 'Living Room' in t
 Huey::Group.new('Living Room', 'Foyer') # All bulbs that have either 'Living Room' or 'Foyer' in their name
 g = Huey::Group.new(Huey::Bulb.find(1), Huey::Bulb.find(3)) # A group specifically containing bulbs 1 and 3
 g.name = 'My Bulbs' # Name your group to find it later
-
-Huey::Group.import('groups.yml') # Import many groups at once from a YAML file.
-# The file should look like this:
-#
-# living_room: [TV, Living Room - Fireplace]
-# foyer: [Foyer]
-# bedroom: [Bedroom]
-
-group = Huey::Group.find('My Bulbs')
+g.save # Pushes your new group to the Hue hub
 
 group.bri = 200
 group.on = true
-group.save # All changes you've made are committed to all the bulbs in a group
+group.save # Updates any changes to the group and commits all changes to the bulbs in it
 
 group.update(bri: 200, ct: 500) # Set and save in one step
 ```
+
+`Group#save` will only create a group on the Hue hub if the group has a name and bulbs. If you're using a group as a temporary collection of bulbs and don't want to persist it, just don't name it: it won't be saved to the hub unless you give it a name.
 
 ### Events
 
@@ -168,7 +162,7 @@ You shouldn't need to initialize anything to make Huey work correctly, but you c
 
 ```ruby
 Huey.configure do |config|
-  # Huey now uses the Phillips Hue API to discover local bridges, but you can
+  # Huey now uses the Philips Hue API to discover local bridges, but you can
   # specify the Hue IP manually if your Huey server is not on your
   # local network.
   config.hue_ip = '123.456.789.012'
@@ -200,7 +194,7 @@ The SSDP discovery driver is lifted whole cloth from turboladen's [UPNP](https:/
 
 ## Quasi-Legal Mumbo-Jumbo
 
-I am not affiliated with Phillips or the Phillips Hue in any way. I just think it's neat. While this Gem works for me, if it causes your lights to catastrophically fail it's not my fault. (Though I think the chances of this happening are pretty unlikely, you never know.)
+I am not affiliated with Philips or the Philips Hue in any way. I just think it's neat. While this Gem works for me, if it causes your lights to catastrophically fail it's not my fault. (Though I think the chances of this happening are pretty unlikely, you never know.)
 
 ## Contributors
 

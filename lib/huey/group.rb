@@ -5,54 +5,86 @@ module Huey
   # A group is a collection of bulbs.
   class Group
     include Enumerable
-    ATTRIBUTES = Huey::Bulb::ATTRIBUTES - [:name, :reachable] + [:rgb]
+    attr_reader :id
     attr_accessor :bulbs, :name
 
-    def self.import(file)
-      hash = YAML.load_file(file)
-
-      hash.each do |key, value|
-        g = Huey::Group.new(value)
-        g.name = key
-      end
-      Huey::Group.all
-    end
-
     def self.all
-      @all ||= []
+      @all ||= reload
     end
 
-    def self.find(name)
-      Huey::Group.all.find {|g| g.name == name}
+    def self.reload
+      @all = [].tap do |all|
+        Huey::Request.get['groups'].collect do |id, hash|
+          next if id == '0' # Group 0 is a special group of all bulbs
+          hash['id'] = id
+          all << Huey::Group.new(hash)
+        end
+      end
     end
 
-    def initialize(*string_or_array)
+    def self.find(id)
+      self.all.find {|g| g.id == id || (g.name && g.name == id.to_s)}
+    end
+
+    def initialize(*input)
       @bulbs = []
-      string_or_array = string_or_array.first if string_or_array.first.is_a?(Array)
+      @attributes_to_write = {}
 
-      self.bulbs = if string_or_array.first.is_a?(Bulb)
-        string_or_array
-      else
-        string_or_array.collect {|s| Huey::Bulb.find_all(s)}.flatten.uniq
+      input = input.first if input.first.is_a?(Array) || input.first.is_a?(Hash)
+      if input.first.is_a?(Bulb) # Then this group was initialized with only a single bulb
+        @bulbs = input
+      elsif input.is_a?(Array) # Then this group was initialized with an array of bulb IDs
+        @bulbs = input.collect {|s| Huey::Bulb.find_all(s)}.flatten.uniq
+      elsif input.is_a?(Hash) # Then this group was initialized with an API response
+        @bulbs = input['lights'].collect {|id| Huey::Bulb.find(id.to_i)}.flatten.uniq
+        @id = input['id'].to_i
+        @name = input['name']
       end
 
-      @attributes_to_write = {}
-      Huey::Group.all << self unless self.bulbs.nil? || self.bulbs.empty?
       self
     end
 
-    Huey::Group::ATTRIBUTES.each do |attribute|
+    Huey::Bulb::ATTRIBUTES.each do |attribute|
       define_method("#{attribute}=".to_sym) do |new_value|
         @attributes_to_write[attribute] = new_value
-      end
+      end unless [:name, :colormode, :reachable].include?(attribute)
     end
 
     def save
+      update_bulbs
+      write_attributes
+      self
+    end
+    alias :commit :save
+
+    def destroy
+      return true if new_record?
+      Huey::Request.delete("groups/#{self.id}")
+      true
+    end
+
+    def update_bulbs
       response = self.collect {|b| b.update(@attributes_to_write)}
       @attributes_to_write = {}
       response
     end
-    alias :commit :save
+
+    def write_attributes
+      return true unless self.name && !self.bulbs.empty?
+
+      attributes = MultiJson.dump({name: @name, lights: @bulbs.collect {|b| b.id.to_s}})
+
+      if self.new_record?
+        response = Huey::Request.post("groups", body: attributes)
+        @id = response.first['success']['id'].match(/\/groups\/([0-9]*)/)[1].to_i
+      else
+        Huey::Request.put("groups/#{self.id}", body: attributes)
+      end
+    end
+
+    def new_record?
+      @id.nil?
+    end
 
     def update(attrs)
       self.collect {|b| b.update(attrs)}
