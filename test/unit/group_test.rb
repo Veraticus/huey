@@ -32,6 +32,12 @@ class GroupTest < MiniTest::Test
     assert_equal [@bulb1, @bulb2, @bulb3], @group.bulbs
   end
 
+  def test_initializes_group_from_bulb_array
+    @group = Huey::Group.new(Huey::Bulb.all)
+
+    assert_equal [@bulb1, @bulb2, @bulb3, @bulb4], @group.bulbs
+  end
+
   def test_delegates_save_to_bulbs
     @group = Huey::Group.new(@bulb1, @bulb2, @bulb3)
 
