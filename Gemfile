@@ -9,5 +9,5 @@ group :development, :test do
   gem 'minitest'
   gem 'timecop'
   gem 'webmock'
-  gem 'mocha', '~> 0.14', require: false
+  gem 'mocha', '~> 1.0'
 end
