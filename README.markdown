@@ -118,7 +118,7 @@ group.update(bri: 200, ct: 500) # Set and save in one step
 You probably want to always do the same actions over and over again to a group of bulbs. To help encapsulate that idea, we have events.
 
 ```ruby
-all = Huey::Group.new(bulbs: Huey::Bulb.all)
+all = Huey::Group.new(Huey::Bulb.all)
 event = Huey::Event.new(name: 'All Lights Off', group: all, actions: {on: false})
 
 event.execute # All lights turn off
