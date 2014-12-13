@@ -44,8 +44,10 @@ That's expected the first time Huey is used with your bridge. Go press the big w
 2.1.0 :003 > Huey::Request.register
  => [{"success"=>{"username"=>"0123456789abdcef0123456789abcdef"}}]
 ```
-
 Now you're ready to go! Since the username is stored in the bridge, you won't have to do this again.
+
+The first time you issue a request towards the Hue bridge and the bridge never communicated before with your application (i.e. the Hue bridge doesn't recognise the user Huey supplied), Huey will automatically call `Huey::Request.register`. As an effect this will then successfully raise: `Huey::Errors::PressLinkButton`. Manually calling `Huey::Request.register` may thus be omitted.
+
 
 ### Bulbs
 
