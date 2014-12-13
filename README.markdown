@@ -28,6 +28,7 @@ Then run `bundleinstall` from your terminal.
 
 Your Hue bridge maintains a "whitelist" of known users who are allowed to access the API. Huey by default uses `'0123456789abdcef0123456789abcdef'` as the indentifier for any application using the gem. *Want a more unique/secure username? Check out the Configuration section below.*
 
+#### Manual user registration
 Open up an IRB session:
 
 ```irb
@@ -44,8 +45,12 @@ That's expected the first time Huey is used with your bridge. Go press the big w
 2.1.0 :003 > Huey::Request.register
  => [{"success"=>{"username"=>"0123456789abdcef0123456789abcdef"}}]
 ```
-
 Now you're ready to go! Since the username is stored in the bridge, you won't have to do this again.
+
+#### Automatic user registration
+
+The first time you issue a request towards the Hue bridge and the bridge never communicated before with your application (i.e. the Hue bridge doesn't recognise the user Huey supplied), Huey will automatically call `Huey::Request.register`. As an effect this will then successfully raise: `Huey::Errors::PressLinkButton`. Manually calling `Huey::Request.register` may thus be omitted when it doesn't fit your application.
+
 
 ### Bulbs
 
