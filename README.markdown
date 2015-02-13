@@ -156,6 +156,36 @@ Huey::Event.import('events.yml')
 Huey::Event.find('Wakeup Call').execute
 ```
 
+### Bridge
+
+You may want to view all the configuration settings currently set on your Hue Bridge, or change some of them.
+
+```ruby
+bridge = Huey::Bridge.new # returns an instance of all current settings on your Hue Bridge
+bridge.name = "MyHueBridge" # rename bridge
+bridge.save # save changes to your Hue Bridge
+bridge.reload # query the bridge api again, and refresh instance
+```
+
+Or you may want to programmatically "push" the link button if you're experimenting or doing app development.
+
+```ruby
+bridge.linkbutton = true # "push" the link button
+bridge.save # remember, the bridge resets the linkbutton state to false after 30 seconds
+```
+
+Alternatively, set and save the linkbutton together.
+
+```ruby
+bridge.link! # sets linkbutton = true and saves to bridge
+```
+
+Or to deauthorize an existing app.
+
+```ruby
+bridge.deauth("myappname") # remove the whitelist entry with key "myappname"
+```
+
 ## Configuration Details
 
 You shouldn't need to initialize anything to make Huey work correctly, but you can define several configuration options:

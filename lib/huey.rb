@@ -18,6 +18,7 @@ require 'huey/request'
 require 'huey/bulb'
 require 'huey/group'
 require 'huey/event'
+require 'huey/bridge'
 
 module Huey
   extend self
