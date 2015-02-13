@@ -2,21 +2,28 @@ module Huey
 
   class Bridge
 
+    # all available attributes from the bridge config; from the latest official
+    # hue api v1.4 documentation at:
+    # http://www.developers.meethue.com/documentation/configuration-api
     ATTRIBUTES = [
-      :name,
-      :mac,
+      :apiversion,
       :dhcp,
-      :ipaddress,
-      :netmask,
       :gateway,
+      :ipaddress,
+      :linkbutton,
+      :localtime,
+      :mac,
+      :name,
+      :netmask,
+      :portalservices,
       :proxyaddress,
       :proxyport,
+      :swupdate,
+      :swversion,
+      :timezone,
       :UTC,
       :whitelist,
-      :swversion,
-      :swupdate,
-      :linkbutton,
-      :portalservices
+      :zigbeechannel
     ]
 
     # set instance (read) methods for ALL bridge attributes
@@ -24,11 +31,11 @@ module Huey
       attr_reader a
     end
 
-    # set instance (write) methods for ONLY :name and :linkbutton attributes
-    # this is to prevent accidental bridge-nuking; TODO maybe add more later
+    # set instance (write) methods for ONLY :name and :linkbutton attributes;
+    # this is to prevent accidental bridge-nuking
     attr_writer :name, :linkbutton
 
-    # a new instance of Huey::Bridge will assign existing values to instance variables
+    # a new instance of Huey::Bridge assigns values to instance variables
     def initialize
       config_hash = Huey::Request.get('config')
       Huey::Bridge::ATTRIBUTES.each do |attribute|
@@ -37,7 +44,6 @@ module Huey
     end
 
     # reloads attributes from the bridge, and reassigns instance variables
-    # remember that the bridge resets :linkbutton to false after 30 seconds
     def reload
       config_hash = Huey::Request.get('config')
       Huey::Bridge::ATTRIBUTES.each do |attribute|
@@ -57,6 +63,20 @@ module Huey
     def deauth(username)
       Huey::Request.delete("config/whitelist/#{username}")
       self.reload
+    end
+
+    # set and save linkbutton state in one step; it resets in 30 seconds!
+    def link!
+      self.linkbutton = true
+      self.save
+      self.linkbutton
+    end
+
+    # reload and check linkbutton state in one step; be careful not to overuse,
+    # since it is querying the bridge api every time
+    def linking?
+      self.reload
+      self.linkbutton
     end
 
   end
