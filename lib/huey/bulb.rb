@@ -23,9 +23,13 @@ module Huey
       self.all.find {|b| b.id == id || b.name == id.to_s}
     end
 
-    def self.find_all(id)
+    def self.find_all(id_or_ids)
       group = Huey::Group.new
-      self.all.select {|b| b.id == id || b.name.include?(id.to_s)}.each {|b| group.bulbs << b}
+      if id_or_ids.is_a? Array
+        self.all.select {|b| id_or_ids.include? b.id}.each {|b| group.bulbs << b}
+      else
+        self.all.select {|b| b.id == id_or_ids || b.name.include?(id_or_ids.to_s)}.each {|b| group.bulbs << b}
+      end
       group
     end
 
