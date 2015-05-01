@@ -2,7 +2,8 @@
 
 module Huey
 
-  # An event encapsulates logic to send to a group, either at a certain time or arbitrarily
+  # An event encapsulates logic to send to a single bulb, a set of bulbs,
+  # or a group, either at a certain time or arbitrarily
   class Event
     attr_accessor :group, :bulbs, :bulb, :at, :actions, :name
 
