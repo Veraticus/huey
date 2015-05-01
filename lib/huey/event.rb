@@ -4,9 +4,10 @@ module Huey
 
   # An event encapsulates logic to send to a group, either at a certain time or arbitrarily
   class Event
-    attr_accessor :group, :at, :actions, :name
+    attr_accessor :group, :bulbs, :bulb, :at, :actions, :name
 
     def self.import(file)
+      @all = []
       hash = YAML.load_file(file)
 
       hash.each do |key, value|
@@ -25,15 +26,15 @@ module Huey
     end
 
     def self.find(name)
-      Huey::Event.all.find {|s| s.name == name}
+      self.all.find {|s| s.name == name}
     end
 
     def self.execute(force = false)
-      Huey::Event.all.collect {|s| s.execute(force)}
+      self.all.collect {|s| s.execute(force)}
     end
 
     def initialize(options)
-      [:group, :actions].each do |key|
+      [:actions].each do |key|
         raise ArgumentError, "You must supply #{key} to create an event" unless options.keys.include?(key)
 
         self.instance_variable_set("@#{key}".to_sym, options[key])
@@ -41,9 +42,17 @@ module Huey
 
       self.at = options[:at]
       self.name = options[:name]
-      self.group = Huey::Group.find(self.group) unless self.group.is_a?(Huey::Group)
+      if options[:group]
+        self.group = Huey::Group.find(options[:group]) unless self.group.is_a?(Huey::Group)
+      elsif options[:bulbs]
+        self.bulbs = Huey::Bulb.find_all(options[:bulbs]) unless self.bulbs.is_a?(Huey::Group)
+      elsif options[:bulb]
+        self.bulb = Huey::Bulb.find(options[:bulb]) unless self.bulbs.is_a?(Huey::Bulb)
+      else
+        raise ArgumentError, "You must supply :bulb, :bulbs or :group to create an event"
+      end
 
-      Huey::Event.all << self
+      self.class.all << self
     end
 
     def should_run?
@@ -51,7 +60,8 @@ module Huey
     end
 
     def execute(force = false)
-      self.group.send(:update, actions) if force || at.nil? || should_run?
+      target = self.group || self.bulbs || self.bulb
+      target.send(:update, actions) if force || at.nil? || should_run?
     end
 
   end
