@@ -6,9 +6,11 @@ module Huey
     class << self
       [:get, :post, :put, :delete].each do |method|
         define_method(method) do |url = '', options = {}|
+          Huey.logger.debug("#{method.to_s.upcase} /#{url}: #{options.inspect}")
           response = HTTParty.send(method,
             "http://#{self.hue_ip}:#{Huey::Config.hue_port}/api/#{Huey::Config.uuid}/#{url}",
             options).parsed_response
+          Huey.logger.debug(response.inspect)
 
           if self.error?(response, 1)
             self.register
