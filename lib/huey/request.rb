@@ -21,8 +21,7 @@ module Huey
 
       def register
         response = HTTParty.post("http://#{self.hue_ip}:#{Huey::Config.hue_port}/api",
-          body: MultiJson.dump({username: Huey::Config.uuid,
-                                devicetype: 'Huey'})).parsed_response
+          body: MultiJson.dump({devicetype: 'Huey'})).parsed_response
 
         raise Huey::Errors::PressLinkButton, 'Press the link button and try your request again' if self.error?(response, 101)
 
