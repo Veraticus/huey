@@ -20,7 +20,7 @@ class RequestTest < MiniTest::Test
 
   def test_attempt_authentication_upon_failure
     stub_request(:get, "http://0.0.0.0/api/0123456789abdcef0123456789abcdef/").to_return(body: MultiJson.dump([{"error"=>{"type"=>1, "address"=>"/", "description"=>"unauthorized user"}}]), headers: {"Content-Type" => 'application/json'})
-    stub_request(:post, "http://0.0.0.0/api").with(body: MultiJson.dump({username: '0123456789abdcef0123456789abcdef', devicetype: 'Huey'})).to_return(body: MultiJson.dump([{"error"=>{"type"=>101, "address"=>"", "description"=>"link button not pressed"}}]), headers: {"Content-Type" => 'application/json'})
+    stub_request(:post, "http://0.0.0.0/api").with(body: MultiJson.dump({devicetype: 'Huey'})).to_return(body: MultiJson.dump([{"error"=>{"type"=>101, "address"=>"", "description"=>"link button not pressed"}}]), headers: {"Content-Type" => 'application/json'})
 
     assert_raises Huey::Errors::PressLinkButton do
       Huey::Request.get
